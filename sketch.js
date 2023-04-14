@@ -102,6 +102,8 @@ let stringsArray = [
 
 let angle = 0
 let size = 1
+let growing = true;
+let bg = 255;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -109,9 +111,9 @@ function setup() {
   h = 200;
 }
 
-function draw() {
+function draw() {  
   fill(random(256));
-  textSize(size+=0.15);
+  textSize(size+=0.05);
   let word = stringsArray[round(random(0, stringsArray.length - 1))];
   let x = width / 2 + cos(angle) * angle * 10; // calculate x position based on angle
   let y = height / 2 + sin(angle) * angle * 10; // calculate y position based on angle
@@ -119,13 +121,26 @@ function draw() {
   translate(x, y); // move origin to x, y position
   rotate(angle); // rotate canvas
   text(word, 0, 0); // display word at origin
+  let lineLength = 200;
+  let startX = -lineLength / 2;
+  let endX = lineLength / 2;
+  let startY = 20;
+  let endY = 20;
+  stroke(random(256), random(256), random(256)); // generate a random color for the line
+  line(startX, startY, endX, endY);
   pop(); // restore previous canvas state
   angle += 0.1; // increment angle for next word
-
-//   text(
-//     stringsArray[round(random(0, stringsArray.length - 1))],
-//     round(random(0, width)),
-//     round(random(0, height))
-//   );
-//   rotate(QUARTER_PI);
+  if (size < 80 && growing) {
+    size += 0.05;
+  } else {
+    growing = false;
+    size -= 0.05;
+    if (size <= 1) {
+      background(0);
+      growing = true;
+      size = 1;
+      bg = 0;
+    }
+  }
+  stroke(bg);
 }
